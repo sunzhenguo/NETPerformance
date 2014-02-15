@@ -32,6 +32,7 @@ namespace ConsoleApplication
 
         public static void Start()
         {
+            Console.WriteLine("FastInvoke");
 
             int times = 1000000;
 
@@ -44,41 +45,42 @@ namespace ConsoleApplication
             Person p = null;
             object[] param = new object[] { word, p, 3 };
 
+            person.Say(ref word, out p, 3); // 预热
 
             //直接调用 
 
-            Stopwatch watch2 = new Stopwatch();
-            watch2.Start();
+            Stopwatch watch1 = new Stopwatch();
+            watch1.Start();
             for (int i = 0; i < times; i++)
             {
                 person.Say(ref word, out p, 3);
             }
-            watch2.Stop();
-            Console.WriteLine("1000000 times invoked by DirectCall: " + watch2.ElapsedMilliseconds + "ms");
+            watch1.Stop();
+            Console.WriteLine(string.Format("{0} times invoked by DirectCall: {1} ms", times.ToString(), watch1.ElapsedMilliseconds));
 
 
             // 直接反射
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
+            Stopwatch watch2 = new Stopwatch();
+            watch2.Start();
             for (int i = 0; i < times; i++)
             {
                 methodInfo.Invoke(person, param);
             }
-            watch.Stop();
-            Console.WriteLine("1000000 times invoked by Reflection: " + watch.ElapsedMilliseconds + "ms");
+            watch2.Stop();
+            Console.WriteLine(string.Format("{0} times invoked by Reflection: {1} ms", times.ToString(), watch2.ElapsedMilliseconds));
 
 
             // Emit 调用
 
-            Stopwatch watch1 = new Stopwatch();
+            Stopwatch watch3 = new Stopwatch();
             FastInvokeHandler fastInvoker = GetMethodInvoker(methodInfo);
-            watch1.Start();
+            watch3.Start();
             for (int i = 0; i < times; i++)
             {
                 fastInvoker(person, param);
             }
-            watch1.Stop();
-            Console.WriteLine("1000000 times invoked by FastInvoke: " + watch1.ElapsedMilliseconds + "ms");
+            watch3.Stop();
+            Console.WriteLine(string.Format("{0} times invoked by FastInvoke: {1} ms", times.ToString(), watch3.ElapsedMilliseconds));
 
 
         }

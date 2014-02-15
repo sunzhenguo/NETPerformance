@@ -49,7 +49,8 @@ namespace ConsoleApplication
 
                 dynamic dt = Activator.CreateInstance(t);
 
-                dt.Call();
+
+//                dt.Call();
 
             }
             watch.Stop();

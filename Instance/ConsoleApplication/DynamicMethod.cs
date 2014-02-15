@@ -26,6 +26,7 @@ namespace ConsoleApplication
 
         public static void Start()
         {
+            Console.WriteLine("DynamicMethodExecutor");
             int times = 1000000; //循环一百万次
 
             //初始化
@@ -43,7 +44,7 @@ namespace ConsoleApplication
                 program.Call(parameters[0], parameters[1], parameters[2]);
             }
             watch1.Stop();
-            Console.WriteLine(watch1.Elapsed + " (Directly invoke)");
+            Console.WriteLine(string.Format("{0} times invoked by DirectCall: {1} ms", times.ToString(), watch1.ElapsedMilliseconds));
 
 
 
@@ -57,7 +58,8 @@ namespace ConsoleApplication
                 methodInfo.Invoke(program, parameters);
             }
             watch2.Stop();
-            Console.WriteLine(watch2.Elapsed + " (Reflection invoke)");
+            Console.WriteLine(string.Format("{0} times invoked by Reflection: {1} ms", times.ToString(), watch2.ElapsedMilliseconds));
+
 
 
             //老赵的表达式树
@@ -70,7 +72,8 @@ namespace ConsoleApplication
                 executor.Execute(program, parameters);
             }
             watch3.Stop();
-            Console.WriteLine(watch3.Elapsed + " (Dynamic executor)");
+            Console.WriteLine(string.Format("{0} times invoked by Dynamic executor: {1} ms", times.ToString(), watch3.ElapsedMilliseconds));
+
 
         }
 
